@@ -45,6 +45,10 @@ type Config struct {
 	// Host is the address the server binds to. Defaults to "localhost".
 	// Set to "0.0.0.0" to expose on all interfaces (e.g. within Docker).
 	Host string `json:"host"`
+
+	// ReverseProxy is the optional target URL for the reverse proxy.
+	// If set, requests that don't match a local file will be forwarded here.
+	ReverseProxy string `json:"reverseProxy"`
 }
 
 // DefaultConfig returns a Config populated with sensible defaults for a

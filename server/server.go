@@ -13,6 +13,8 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -58,6 +60,7 @@ type Server struct {
 	// mu guards the sseClients map.
 	mu         sync.Mutex
 	sseClients map[chan string]struct{}
+	proxy      *httputil.ReverseProxy
 }
 
 // New creates a Server. Call Start to begin accepting connections.
@@ -74,6 +77,16 @@ func New(cfg *config.Config, log *logger.Logger) *Server {
 	if cfg.LiveReload {
 		mux.HandleFunc("/__snapdev_sse", s.handleSSE)
 	}
+
+	if cfg.ReverseProxy != "" {
+		target, err := url.Parse(cfg.ReverseProxy)
+		if err != nil {
+			log.Warn("Invalid reverse proxy URL %q: %v (proxy disabled)", cfg.ReverseProxy, err)
+		} else {
+			s.proxy = httputil.NewSingleHostReverseProxy(target)
+		}
+	}
+
 	mux.HandleFunc("/", s.handleStatic)
 
 	s.httpSrv = &http.Server{
@@ -144,6 +157,12 @@ func (s *Server) handleStatic(w http.ResponseWriter, r *http.Request) {
 	// SPA fallback: if the target doesn't exist or is a directory, serve index.html.
 	info, err := os.Stat(target)
 	if err != nil || info.IsDir() {
+		// If a proxy is configured, forward the request to it instead of performing SPA fallback.
+		if s.proxy != nil {
+			s.proxy.ServeHTTP(w, r)
+			return
+		}
+
 		target = filepath.Join(s.cfg.OutputDir, "index.html")
 	}
 

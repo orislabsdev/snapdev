@@ -36,6 +36,7 @@ var (
 	flagBuild       string
 	flagPort        int
 	flagHost        string
+	flagProxy       string
 	flagNoReload    bool
 	flagVerbose     bool
 	flagInitialOnly bool
@@ -90,6 +91,8 @@ func init() {
 		"Port for the static file server (overrides config)")
 	rootCmd.Flags().StringVar(&flagHost, "host", "",
 		"Host/address to bind the server to (overrides config)")
+	rootCmd.Flags().StringVarP(&flagProxy, "proxy", "P", "",
+		"Target URL for the reverse proxy (overrides config)")
 	rootCmd.Flags().BoolVar(&flagNoReload, "no-live-reload", false,
 		"Disable automatic browser live reload after builds")
 	rootCmd.Flags().BoolVar(&flagInitialOnly, "build-only", false,
@@ -131,6 +134,9 @@ func runRoot(cmd *cobra.Command, args []string) error {
 	if flagHost != "" {
 		cfg.Host = flagHost
 	}
+	if flagProxy != "" {
+		cfg.ReverseProxy = flagProxy
+	}
 	if flagNoReload {
 		cfg.LiveReload = false
 	}
@@ -139,8 +145,8 @@ func runRoot(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("invalid configuration: %w", err)
 	}
 
-	log.Info("watch=%s  build=%q  output=%s  port=%d  live-reload=%v",
-		cfg.WatchDir, cfg.BuildCommand, cfg.OutputDir, cfg.Port, cfg.LiveReload)
+	log.Info("watch=%s  build=%q  output=%s  port=%d  live-reload=%v  proxy=%q",
+		cfg.WatchDir, cfg.BuildCommand, cfg.OutputDir, cfg.Port, cfg.LiveReload, cfg.ReverseProxy)
 
 	// ── 2. Initial build ─────────────────────────────────────────────────────
 
