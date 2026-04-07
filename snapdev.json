@@ -1,0 +1,28 @@
+{
+    "watchDir": "src",
+    "buildCommand": "npm run build",
+    "outputDir": "dist",
+    "port": 3000,
+    "host": "localhost",
+    "debounceMs": 300,
+    "liveReload": true,
+    "ignore": [
+        "node_modules",
+        ".git",
+        "dist",
+        ".snapdev",
+        "coverage"
+    ],
+    "extensions": [
+        ".tsx",
+        ".ts",
+        ".jsx",
+        ".js",
+        ".css",
+        ".scss",
+        ".html",
+        ".json",
+        ".svg",
+        ".env"
+    ]
+}
