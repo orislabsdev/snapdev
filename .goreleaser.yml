@@ -1,0 +1,45 @@
+version: 2
+
+project_name: snapdev
+
+builds:
+  - id: snapdev
+    main: ./main.go          # ← importante porque main.go está en la raíz
+    binary: snapdev
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X main.Version={{.Version}}
+      - -X main.Commit={{.Commit}}
+      - -X main.BuildDate={{.Date}}
+
+archives:
+  - id: default
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}'
+
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Version }}_checksums.txt'
+  algorithm: sha256
+
+snapshot:
+  version_template: "{{ .Tag }}-snapshot"
+
+release:
+  github:
+    owner: orislabsdev     # ← cámbialo por tu usuario
+    # name: snapdev               # opcional, por defecto usa el nombre del repo
+  draft: false
+  prerelease: auto
