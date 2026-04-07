@@ -44,7 +44,7 @@ You do not need to write code to contribute. We welcome:
 ### Clone and build
 
 ```bash
-git clone https://github.com/snapdev/snapdev.git
+git clone https://github.com/orislabsdev/snapdev.git
 cd snapdev
 make deps    # go mod download
 make build   # outputs ./bin/snapdev
@@ -166,7 +166,7 @@ test(builder): cover Windows cmd.exe command parsing
 
 ## Reporting issues
 
-Use the GitHub [issue tracker](https://github.com/snapdev/snapdev/issues).
+Use the GitHub [issue tracker](https://github.com/orislabsdev/snapdev/issues).
 
 - Search for existing issues before opening a new one.
 - Use the **Bug Report** template for bugs and the **Feature Request** template for ideas.

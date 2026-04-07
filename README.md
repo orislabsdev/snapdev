@@ -34,18 +34,18 @@ The standard `vite` dev server keeps your **entire module graph in memory** — 
 
 ### Pre-built binary (recommended)
 
-Download the latest release for your platform from the [Releases page](https://github.com/snapdev/snapdev/releases).
+Download the latest release for your platform from the [Releases page](https://github.com/orislabsdev/snapdev/releases).
 
 ```bash
 # macOS / Linux — place in your PATH
-curl -sSL https://github.com/snapdev/snapdev/releases/latest/download/snapdev-$(uname -s | tr A-Z a-z)-amd64.tar.gz | tar -xz
+curl -sSL https://github.com/orislabsdev/snapdev/releases/latest/download/snapdev-$(uname -s | tr A-Z a-z)-amd64.tar.gz | tar -xz
 sudo mv snapdev /usr/local/bin/
 ```
 
 ### Build from source
 
 ```bash
-git clone https://github.com/snapdev/snapdev.git
+git clone https://github.com/orislabsdev/snapdev.git
 cd snapdev
 make build          # outputs ./bin/snapdev
 make install        # installs to $GOPATH/bin
@@ -56,7 +56,7 @@ Requires **Go 1.21+**.
 ### go install
 
 ```bash
-go install github.com/snapdev/snapdev@latest
+go install github.com/orislabsdev/snapdev@latest
 ```
 
 ---
@@ -152,7 +152,7 @@ snapdev --config apps/dashboard/snapdev.json --port 3001 &
 
 ```dockerfile
 FROM golang:1.21 AS snapdev-builder
-RUN go install github.com/snapdev/snapdev@latest
+RUN go install github.com/orislabsdev/snapdev@latest
 
 FROM node:20-slim
 COPY --from=snapdev-builder /go/bin/snapdev /usr/local/bin/snapdev
@@ -216,7 +216,7 @@ snapdev --build-only     # exits 0 on success, 1 on failure
 ## Development
 
 ```bash
-git clone https://github.com/snapdev/snapdev.git
+git clone https://github.com/orislabsdev/snapdev.git
 cd snapdev
 
 make deps          # download Go modules

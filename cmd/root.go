@@ -21,7 +21,7 @@ import (
 
 // Version is injected at build time via -ldflags:
 //
-//	go build -ldflags "-X github.com/snapdev/snapdev/cmd.Version=1.2.3"
+//	go build -ldflags "-X github.com/orislabsdev/snapdev/cmd.Version=1.2.3"
 var Version = "dev"
 
 var (
@@ -56,7 +56,7 @@ Quick start:
   snapdev -w src -o dist -b "npm run build" -p 3000
   snapdev --config my-snapdev.json
 
-See https://github.com/snapdev/snapdev for full documentation.`,
+See https://github.com/orislabsdev/snapdev for full documentation.`,
 	SilenceUsage: true,
 	RunE:         runRoot,
 }
