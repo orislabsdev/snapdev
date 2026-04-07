@@ -4,7 +4,7 @@ project_name: snapdev
 
 builds:
   - id: snapdev
-    main: ./main.go          # ← importante porque main.go está en la raíz
+    main: ./main.go          
     binary: snapdev
     env:
       - CGO_ENABLED=0
@@ -39,7 +39,7 @@ snapshot:
 
 release:
   github:
-    owner: orislabsdev     # ← cámbialo por tu usuario
-    # name: snapdev               # opcional, por defecto usa el nombre del repo
+    owner: orislabsdev     
+    # name: snapdev               
   draft: false
   prerelease: auto
