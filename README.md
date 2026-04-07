@@ -2,9 +2,9 @@
 
 > **Build-watch-serve** — a lightweight dev tool for React/Vite that watches your source files, compiles on every change, and serves the static output with live reload.
 
-[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go)](https://go.dev)
+[![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go)](https://go.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CI](https://github.com/orislabsdev/snapdev/actions/workflows/ci.yml/badge.svg)](https://github.com/orislabsdev/snapdev/actions)
+[![CI](https://img.shields.io/github/actions/workflow/status/orislabsdev/snapdev/ci.yml?branch=main&label=CI&logo=github)](https://github.com/orislabsdev/snapdev/actions/workflows/ci.yml)
 
 ---
 
@@ -237,17 +237,16 @@ snapdev/
 ├── cmd/
 │   ├── root.go          # Root Cobra command — wires all subsystems
 │   └── version.go       # `snapdev version` sub-command
-├── internal/
-│   ├── builder/
-│   │   └── builder.go   # Subprocess build executor
-│   ├── config/
-│   │   └── config.go    # Config loading, defaults, validation
-│   ├── logger/
-│   │   └── logger.go    # Coloured, levelled logger
-│   ├── server/
-│   │   └── server.go    # Static file server + SSE live reload
-│   └── watcher/
-│       └── watcher.go   # fsnotify-backed file watcher with debounce
+├── builder/
+│   └── builder.go       # Subprocess build executor
+├── config/
+│   └── config.go        # Config loading, defaults, validation
+├── logger/
+│   └── logger.go        # Coloured, levelled logger
+├── server/
+│   └── server.go        # Static file server + SSE live reload
+├── watcher/
+│   └── watcher.go       # fsnotify-backed file watcher with debounce
 ├── main.go
 ├── go.mod
 ├── Makefile

@@ -93,13 +93,13 @@ make release      Tag and push a release (maintainers only)
 | Package | Responsibility |
 |---|---|
 | `cmd` | CLI definition (Cobra commands, flag parsing, wiring) |
-| `internal/config` | Config struct, defaults, loading, validation |
-| `internal/logger` | Coloured terminal output |
-| `internal/watcher` | fsnotify wrapper with debounce and filtering |
-| `internal/builder` | Subprocess build execution |
-| `internal/server` | HTTP server, SPA fallback, SSE live reload |
+| `config` | Config struct, defaults, loading, validation |
+| `logger` | Coloured terminal output |
+| `watcher` | fsnotify wrapper with debounce and filtering |
+| `builder` | Subprocess build execution |
+| `server` | HTTP server, SPA fallback, SSE live reload |
 
-Do not introduce cross-package imports that form cycles. All `internal` packages are independent; only `cmd` wires them together.
+Do not introduce cross-package imports that form cycles. All packages are independent; only `cmd` wires them together.
 
 ### Tests
 
