@@ -43,3 +43,4 @@ release:
     # name: snapdev               
   draft: false
   prerelease: auto
+  disable: true
