@@ -4,7 +4,7 @@
 
 [![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go)](https://go.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/orislabsdev/snapdev/ci.yml?branch=main&label=CI&logo=github)](https://github.com/orislabsdev/snapdev/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/orislabsdev/snapdev/go.yml?branch=main&label=CI&logo=github)](https://github.com/orislabsdev/snapdev/actions/workflows/go.yml)
 
 ---
 

@@ -2,9 +2,9 @@ name: Go
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "master", "main", "develop" ]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "master", "main", "develop" ]
 
 jobs:
   test:
@@ -42,8 +42,8 @@ jobs:
           file: ./coverage.txt
           fail_ci_if_error: false
 
-      - name: Lint with golangci-lint v2
-        uses: golangci/golangci-lint-action@v7
+      - name: Lint with golangci-lint
+        uses: golangci/golangci-lint-action@v6
         with:
-          version: v2.11
+          version: latest
           args: --timeout=5m --config=.golangci.yml
