@@ -262,4 +262,4 @@ snapdev/
 
 ## License
 
-[MIT](LICENSE) © snapdev contributors
+[MIT](LICENSE) &copy; 2026 Oris Labs. Built by engineers, for engineers.
