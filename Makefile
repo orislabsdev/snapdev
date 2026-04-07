@@ -22,11 +22,11 @@ PLATFORMS   := linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64
 
 build: ## Build the binary for the current platform
 	@mkdir -p $(OUTPUT_DIR)
-	go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY) .
+	go build -buildvcs=false -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY) .
 	@echo "  → $(OUTPUT_DIR)/$(BINARY)"
 
 install: ## Install the binary into $$GOPATH/bin
-	go install -ldflags "$(LDFLAGS)" .
+	go install -buildvcs=false -ldflags "$(LDFLAGS)" .
 
 build-all: ## Cross-compile for all supported platforms
 	@mkdir -p $(DIST_DIR)
@@ -35,6 +35,7 @@ build-all: ## Cross-compile for all supported platforms
 		$(eval ARCH=$(word 2,$(subst /, ,$(platform)))) \
 		$(eval EXT=$(if $(filter windows,$(OS)),.exe,)) \
 		GOOS=$(OS) GOARCH=$(ARCH) go build \
+			-buildvcs=false \
 			-ldflags "$(LDFLAGS)" \
 			-o $(DIST_DIR)/$(BINARY)-$(OS)-$(ARCH)$(EXT) . ; \
 		echo "  → $(DIST_DIR)/$(BINARY)-$(OS)-$(ARCH)$(EXT)" ; \
