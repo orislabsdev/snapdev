@@ -46,6 +46,7 @@ linters:
         - io.Close
         - fmt.Fprint
         - fmt.Fprintf
+        - fmt.Fprintln
         - net.Close
 
     revive:
