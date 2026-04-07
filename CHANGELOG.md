@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multi-platform support (Linux, macOS, Windows).
 - GitHub Actions CI/CD for cross-compilation, linting, and testing.
 - Documentation: README, CONTRIBUTING, SECURITY, and code documentation.
+- Added build metadata to version command.
 
 ### Changed
 - Standardized logging implementation with colored output and level control.
@@ -26,3 +27,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Various minor improvements to error handling and watcher stability.
+- Makefile: removed `-v` flag from `mkdir` to ensure compatibility with macOS `mkdir`.

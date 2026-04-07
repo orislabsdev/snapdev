@@ -1,6 +1,6 @@
 # Release Notes - v0.1.0
 
-We are excited to announce the first official release of **snapdev**! 🚀
+We are excited to announce version **v0.1.0** of **snapdev**! 🚀
 
 `snapdev` is a lightweight, high-performance development tool designed as a memory-efficient alternative to full-featured dev servers like Vite. It focuses on the core workflow: **watch, build, and serve.**
 

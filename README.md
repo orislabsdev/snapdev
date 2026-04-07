@@ -2,7 +2,7 @@
 
 > **Build-watch-serve** — a lightweight dev tool for React/Vite that watches your source files, compiles on every change, and serves the static output with live reload.
 
-[![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go)](https://go.dev)
+[![Go Version](https://img.shields.io/badge/Go-1.25.1+-00ADD8?logo=go)](https://go.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/orislabsdev/snapdev/go.yml?branch=master&label=CI&logo=github)](https://github.com/orislabsdev/snapdev/actions/workflows/go.yml)
 
@@ -51,7 +51,7 @@ make build          # outputs ./bin/snapdev
 make install        # installs to $GOPATH/bin
 ```
 
-Requires **Go 1.21+**.
+Requires **Go 1.25.1+**.
 
 ### go install
 
@@ -151,7 +151,7 @@ snapdev --config apps/dashboard/snapdev.json --port 3001 &
 ### Docker
 
 ```dockerfile
-FROM golang:1.21 AS snapdev-builder
+FROM golang:1.25.1 AS snapdev-builder
 RUN go install github.com/orislabsdev/snapdev@latest
 
 FROM node:20-slim
