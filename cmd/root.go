@@ -22,7 +22,11 @@ import (
 // Version is injected at build time via -ldflags:
 //
 //	go build -ldflags "-X github.com/orislabsdev/snapdev/cmd.Version=1.2.3"
-var Version = "dev"
+var (
+	Version   = "dev"
+	Commit    = "none"
+	BuildDate = "unknown"
+)
 
 var (
 	// CLI flag values — bound in init(), read in runRoot.
