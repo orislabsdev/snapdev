@@ -16,7 +16,7 @@ DIST_DIR    := dist
 
 PLATFORMS   := linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64
 
-.PHONY: all build install clean test test-race lint vet fmt tidy deps build-all help
+.PHONY: all build install clean test test-race lint vet fmt tidy deps build-all release snapshot help
 
 ##@ Build
 
@@ -75,6 +75,14 @@ tidy: ## Tidy go.mod / go.sum
 
 clean: ## Remove build artefacts
 	rm -rf $(OUTPUT_DIR) $(DIST_DIR)
+
+##@ Release
+
+release: ## Run GoReleaser (full release — requires tag and GITHUB_TOKEN)
+	goreleaser release --clean
+
+snapshot: ## Run GoReleaser in snapshot mode (local build only)
+	goreleaser release --snapshot --clean
 
 ##@ Help
 
