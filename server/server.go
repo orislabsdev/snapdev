@@ -83,7 +83,17 @@ func New(cfg *config.Config, log *logger.Logger) *Server {
 		if err != nil {
 			log.Warn("Invalid reverse proxy URL %q: %v (proxy disabled)", cfg.ReverseProxy, err)
 		} else {
+			// Initialize the proxy for the target host.
 			s.proxy = httputil.NewSingleHostReverseProxy(target)
+
+			// Fix: Many backend servers (like Vite/Next.js/Express) reject requests if the
+			// Host header doesn't match their address, returning "400 Bad Request".
+			// We override the Director to ensure the Host header is correctly set.
+			originalDirector := s.proxy.Director
+			s.proxy.Director = func(req *http.Request) {
+				originalDirector(req)
+				req.Host = target.Host
+			}
 		}
 	}
 
@@ -150,28 +160,49 @@ func (s *Server) NotifyReload() {
 // serves it. Unknown paths fall back to index.html for SPA client-side routing.
 // HTML files have the live-reload snippet injected when live reload is enabled.
 func (s *Server) handleStatic(w http.ResponseWriter, r *http.Request) {
-	// Sanitise the URL path and map it to a filesystem path.
+	// 1. Sanitise the URL path and map it to a filesystem path.
 	rel := filepath.Clean(r.URL.Path)
 	target := filepath.Join(s.cfg.OutputDir, rel)
 
-	// SPA fallback: if the target doesn't exist or is a directory, serve index.html.
+	// 2. Check if the path exists locally.
 	info, err := os.Stat(target)
-	if err != nil || info.IsDir() {
-		// If a proxy is configured, forward the request to it instead of performing SPA fallback.
-		if s.proxy != nil {
-			s.proxy.ServeHTTP(w, r)
-			return
-		}
 
-		target = filepath.Join(s.cfg.OutputDir, "index.html")
+	// 3. If the path is a directory (like "/"), try to locate an index.html within it.
+	// This ensures we serve the static web app instead of proxying the root path.
+	if err == nil && info.IsDir() {
+		indexPath := filepath.Join(target, "index.html")
+		if _, errIdx := os.Stat(indexPath); errIdx == nil {
+			target = indexPath
+			info, _ = os.Stat(target)
+			err = nil // Path now points to a valid file.
+		}
 	}
 
-	// Inject live-reload snippet into HTML responses.
-	if s.cfg.LiveReload && strings.EqualFold(filepath.Ext(target), ".html") {
-		s.serveHTML(w, r, target)
+	// 4. If the file exists locally and is not a directory, serve it.
+	if err == nil && !info.IsDir() {
+		// Inject live-reload snippet into HTML responses.
+		if s.cfg.LiveReload && strings.EqualFold(filepath.Ext(target), ".html") {
+			s.serveHTML(w, r, target)
+			return
+		}
+		http.ServeFile(w, r, target)
 		return
 	}
 
+	// 5. If not found locally, forward the request to the reverse proxy if configured.
+	// This is where API requests (e.g. /api/data) typically get handled.
+	if s.proxy != nil {
+		s.proxy.ServeHTTP(w, r)
+		return
+	}
+
+	// 6. SPA Fallback: If no file exists and proxying didn't handle it, serve the
+	// main index.html. This allows client-side routers (React Router, etc.) to work.
+	target = filepath.Join(s.cfg.OutputDir, "index.html")
+	if s.cfg.LiveReload {
+		s.serveHTML(w, r, target)
+		return
+	}
 	http.ServeFile(w, r, target)
 }
 

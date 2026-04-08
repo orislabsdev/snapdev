@@ -128,6 +128,6 @@ func (l *Logger) Banner(version string) {
  \__ \ | | | (_| | |_) | (_| |  __/\ V /
  |___/_| |_|\__,_| .__/ \__,_|\___| \_/
                  |_|`+colorReset)
-	fmt.Fprintf(l.out, "  %sLightweight build-watch-serve for React/Vite%s  v%s\n\n",
+	fmt.Fprintf(l.out, "  %sLightweight build-watch-serve for React/Vite%s  %s\n\n",
 		colorGray, colorReset, version)
 }
