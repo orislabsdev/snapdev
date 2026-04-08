@@ -23,11 +23,11 @@ func TestServerRouting(t *testing.T) {
 
 	distDir := filepath.Join(tmpDir, "dist")
 	os.Mkdir(distDir, 0755)
-	
+
 	// Create some static files
 	os.WriteFile(filepath.Join(distDir, "index.html"), []byte("ROOT_INDEX"), 0644)
 	os.WriteFile(filepath.Join(distDir, "test.txt"), []byte("STATIC_FILE"), 0644)
-	
+
 	// Create a subdirectory with an index.html
 	subDir := filepath.Join(distDir, "sub")
 	os.Mkdir(subDir, 0755)
@@ -57,12 +57,12 @@ func TestServerRouting(t *testing.T) {
 	handler := srv.httpSrv.Handler
 
 	tests := []struct {
-		name           string
-		path           string
-		headers        map[string]string
-		expectedBody   string
-		expectedProxy  bool
-		expectedHost   string // Only checked if proxied
+		name          string
+		path          string
+		headers       map[string]string
+		expectedBody  string
+		expectedProxy bool
+		expectedHost  string // Only checked if proxied
 	}{
 		{
 			name:         "Serve root index.html",
@@ -117,7 +117,7 @@ func TestServerRouting(t *testing.T) {
 
 			resp := w.Result()
 			body, _ := io.ReadAll(resp.Body)
-			
+
 			if !strings.Contains(string(body), tt.expectedBody) {
 				t.Errorf("Expected body containing %q, got %q", tt.expectedBody, string(body))
 			}
