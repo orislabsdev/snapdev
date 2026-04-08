@@ -25,6 +25,7 @@ The standard `vite` dev server keeps your **entire module graph in memory** — 
 | Incremental builds | ✅ In-memory | ✅ Via your build tool |
 | SPA fallback routing | ✅ | ✅ |
 | Live browser reload | ✅ | ✅ (SSE) |
+| Reverse proxy support | ✅ | ✅ |
 | Works with any bundler | ❌ Vite-specific | ✅ Any command |
 | Single binary / no Node | ❌ | ✅ |
 
@@ -89,7 +90,8 @@ Open **http://localhost:3000**. Save a file in `src/` — the project rebuilds a
   "debounceMs":   300,
   "liveReload":   true,
   "ignore":       ["node_modules", ".git", "dist", ".snapdev"],
-  "extensions":   [".tsx", ".ts", ".jsx", ".js", ".css", ".html", ".json", ".svg"]
+  "extensions":   [".tsx", ".ts", ".jsx", ".js", ".css", ".html", ".json", ".svg"],
+  "reverseProxy": "http://localhost:8080"
 }
 ```
 
@@ -106,6 +108,7 @@ Open **http://localhost:3000**. Save a file in `src/` — the project rebuilds a
 | `liveReload` | boolean | `true` | Inject SSE snippet and reload browser after builds |
 | `ignore` | string[] | `[…]` | Path substrings to exclude from watching |
 | `extensions` | string[] | `[…]` | File extensions that trigger a rebuild |
+| `reverseProxy`| string | `""` | Target URL for request forwarding |
 
 ### CLI flags
 
@@ -117,6 +120,7 @@ Flags always override `snapdev.json`:
   -o, --output string         Directory to serve
   -b, --build string          Build command
   -p, --port int              HTTP port
+  -P, --proxy string          Reverse proxy target URL
       --host string           Bind address
       --no-live-reload        Disable live reload
       --build-only            Run one build then exit (useful in CI)

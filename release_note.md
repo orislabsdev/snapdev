@@ -1,16 +1,24 @@
-# Release Notes - v0.1.0
+# Release Notes - v0.2.0
 
-We are excited to announce version **v0.1.0** of **snapdev**! 🚀
+We are excited to announce version **v0.2.0** of **snapdev**! 🚀
 
-`snapdev` is a lightweight, high-performance development tool designed as a memory-efficient alternative to full-featured dev servers like Vite. It focuses on the core workflow: **watch, build, and serve.**
+This release introduces highly requested features, including **Reverse Proxy support** and automated **multi-platform distribution** via GoReleaser.
 
-## Key Features
+## What's New?
 
-- **Low Memory Footprint**: Uses ~10MB of RAM, compared to 200MB+ for traditional dev servers.
-- **Tool-Agnostic**: Works with any build command (`npm run build`, `vite build`, `hugo`, etc.).
-- **Live Reload**: Automatically reloads your browser after every successful build via SSE.
-- **SPA Ready**: Built-in support for single-page applications with transparent `index.html` fallback.
-- **Zero Config**: Sensible defaults allow you to start with just `snapdev`, or customize via `snapdev.json`.
+### 🔄 Reverse Proxy Support
+You can now redirect API requests or other non-static assets to a different backend server. If a requested file is not found in the `outputDir`, `snapdev` will forward the request to your configured proxy target.
+
+- **CLI**: `snapdev --proxy http://localhost:8080`
+- **JSON**: `"reverseProxy": "http://localhost:8080"`
+
+### 📦 Automated Releases
+We've integrated **GoReleaser** to provide verified, cross-platform binaries for Linux, macOS, and Windows. This ensures that you always have access to the latest performance improvements and security patches on any system.
+
+### ⚙️ Performance & Stability
+- **Go 1.25.1**: Upgraded the project to the latest Go version for improved runtime performance.
+- **Optimised Builds**: Disabled unnecessary VCS metadata collection during development builds to speed up the watch-rebuild loop.
+- **macOS Compatibility**: Fixed Makefile issues for better developer experience on Apple Silicon and Intel Macs.
 
 ## Installation
 
@@ -29,12 +37,12 @@ go install github.com/orislabsdev/snapdev@latest
 
 ## What's Next?
 
-This initial release establishes a solid foundation for lightweight frontend development. We plan to add:
-- More granular watch/ignore filters.
-- Support for custom SSE events.
-- Enhanced telemetry for build performance.
+Our roadmap for the upcoming releases includes:
+- **Watch Filters**: More granular control over file inclusions and exclusions.
+- **Custom Events**: Support for user-defined SSE events for complex frontend interactions.
+- **Plugin System**: Initial research into a lightweight plugin architecture for custom build steps.
 
-Thank you for trying out `snapdev`!
+Thank you for being part of the `snapdev` journey!
 
 ---
 [MIT License](LICENSE) | [GitHub Repository](https://github.com/orislabsdev/snapdev)
