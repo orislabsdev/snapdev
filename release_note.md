@@ -1,24 +1,25 @@
-# Release Notes - v0.2.0
+# Release Notes - v0.2.1
 
-We are excited to announce version **v0.2.0** of **snapdev**! 🚀
+We are pleased to announce version **v0.2.1** of **snapdev**! 🚀
 
-This release introduces highly requested features, including **Reverse Proxy support** and automated **multi-platform distribution** via GoReleaser.
+This release focuses on refining the **Reverse Proxy** feature introduced in v0.2.0, adding comprehensive **unit tests**, and improving the **SPA routing** logic to better handle browser navigation.
 
 ## What's New?
 
-### 🔄 Reverse Proxy Support
-You can now redirect API requests or other non-static assets to a different backend server. If a requested file is not found in the `outputDir`, `snapdev` will forward the request to your configured proxy target.
+### 🛠️ Smart SPA Routing
+We've improved how `snapdev` decides whether to serve your `index.html` or forward a request to the reverse proxy. 
 
-- **CLI**: `snapdev --proxy http://localhost:8080`
-- **JSON**: `"reverseProxy": "http://localhost:8080"`
+Browsers performing full-page navigations (which include `Accept: text/html` in their headers) now correctly receive the `index.html` fallback for unknown routes. This ensures that client-side routing (like React Router) works seamlessly even when a proxy is configured for API calls.
 
-### 📦 Automated Releases
-We've integrated **GoReleaser** to provide verified, cross-platform binaries for Linux, macOS, and Windows. This ensures that you always have access to the latest performance improvements and security patches on any system.
+### 🔌 Improved Proxy Compatibility
+The reverse proxy now correctly propagates the `Host` header to the target backend. This is a critical fix for users proxying to servers that rely on virtual hosting or specific host-based middleware.
 
-### ⚙️ Performance & Stability
-- **Go 1.25.1**: Upgraded the project to the latest Go version for improved runtime performance.
-- **Optimised Builds**: Disabled unnecessary VCS metadata collection during development builds to speed up the watch-rebuild loop.
-- **macOS Compatibility**: Fixed Makefile issues for better developer experience on Apple Silicon and Intel Macs.
+### 🧪 Enhanced Test Suite
+We've added a comprehensive unit test suite for the `server` package, covering static file resolution, SPA fallback, and proxying logic. This ensures a stable and predictable developer experience as the project grows.
+
+### ✨ Visual Polish
+- Refined the startup banner for a cleaner look.
+- Improved code formatting and alignment in tests.
 
 ## Installation
 
@@ -37,12 +38,12 @@ go install github.com/orislabsdev/snapdev@latest
 
 ## What's Next?
 
-Our roadmap for the upcoming releases includes:
+Our roadmap continues:
 - **Watch Filters**: More granular control over file inclusions and exclusions.
-- **Custom Events**: Support for user-defined SSE events for complex frontend interactions.
-- **Plugin System**: Initial research into a lightweight plugin architecture for custom build steps.
+- **Custom Events**: Support for user-defined SSE events.
+- **Plugin System**: Research into custom build hooks.
 
-Thank you for being part of the `snapdev` journey!
+Thank you for your feedback and contributions!
 
 ---
 [MIT License](LICENSE) | [GitHub Repository](https://github.com/orislabsdev/snapdev)

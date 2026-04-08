@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2026-04-08
+
+### Added
+- Comprehensive unit tests for the HTTP server, routing, and SPA fallback behavior.
+
+### Changed
+- Improved SPA routing fallback: requests from browsers (identified by `Accept: text/html` header) now prioritize `index.html` over the reverse proxy.
+- Updated reverse proxy to propagate the `Host` header to the target backend, improving compatibility with virtual hosts.
+- Refined logger output formatting for a cleaner boot sequence.
+
 ## [0.2.0] - 2026-04-08
 
 ### Added
