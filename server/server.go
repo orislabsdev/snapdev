@@ -189,16 +189,28 @@ func (s *Server) handleStatic(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 5. If not found locally, forward the request to the reverse proxy if configured.
+	// 5. SPA Heuristic: If the request accepts HTML, it's likely a browser navigation.
+	// We serve index.html even if a proxy is configured, so that the frontend
+	// router can handle the path.
+	if strings.Contains(r.Header.Get("Accept"), "text/html") {
+		s.serveSPA(w, r)
+		return
+	}
+
+	// 6. If not found locally and not an HTML request, forward to the reverse proxy.
 	// This is where API requests (e.g. /api/data) typically get handled.
 	if s.proxy != nil {
 		s.proxy.ServeHTTP(w, r)
 		return
 	}
 
-	// 6. SPA Fallback: If no file exists and proxying didn't handle it, serve the
-	// main index.html. This allows client-side routers (React Router, etc.) to work.
-	target = filepath.Join(s.cfg.OutputDir, "index.html")
+	// 7. Final fallback: Serve index.html if no file exists and no proxy handled it.
+	s.serveSPA(w, r)
+}
+
+// serveSPA serves the main index.html file from the output directory.
+func (s *Server) serveSPA(w http.ResponseWriter, r *http.Request) {
+	target := filepath.Join(s.cfg.OutputDir, "index.html")
 	if s.cfg.LiveReload {
 		s.serveHTML(w, r, target)
 		return

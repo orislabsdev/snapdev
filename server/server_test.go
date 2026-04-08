@@ -59,6 +59,7 @@ func TestServerRouting(t *testing.T) {
 	tests := []struct {
 		name           string
 		path           string
+		headers        map[string]string
 		expectedBody   string
 		expectedProxy  bool
 		expectedHost   string // Only checked if proxied
@@ -91,9 +92,16 @@ func TestServerRouting(t *testing.T) {
 			expectedHost:  strings.TrimPrefix(backend.URL, "http://"),
 		},
 		{
-			name:          "SPA Fallback (no file, no subdirectory, no proxy - test without proxy)",
+			name:          "SPA Fallback for browser navigation (Accept: text/html)",
 			path:          "/some-route",
-			expectedBody:  "BACKEND_RESPONSE: /some-route", // If proxy is configured, it gets prioritised over SPA
+			headers:       map[string]string{"Accept": "text/html"},
+			expectedBody:  "ROOT_INDEX",
+			expectedProxy: false,
+		},
+		{
+			name:          "Proxy unknown path (no HTML preference)",
+			path:          "/some-route",
+			expectedBody:  "BACKEND_RESPONSE: /some-route",
 			expectedProxy: true,
 		},
 	}
@@ -101,6 +109,9 @@ func TestServerRouting(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest("GET", tt.path, nil)
+			for k, v := range tt.headers {
+				req.Header.Set(k, v)
+			}
 			w := httptest.NewRecorder()
 			handler.ServeHTTP(w, req)
 
