@@ -40,6 +40,19 @@ const liveReloadSnippet = `
     if (e.data === 'reload') {
       console.log('[snapdev] Reloading…');
       location.reload();
+    } else if (e.data === 'css-update') {
+      console.log('[snapdev] Hot reloading CSS…');
+      var links = document.getElementsByTagName('link');
+      for (var i = 0; i < links.length; i++) {
+        var link = links[i];
+        if (link.rel === 'stylesheet' && 
+           (!link.href.startsWith('https://') && !link.href.startsWith('http://') || 
+            link.href.includes(location.host))) {
+          var url = new URL(link.href);
+          url.searchParams.set('snapdev_t', Date.now());
+          link.href = url.href;
+        }
+      }
     }
   };
   es.onerror = function () {
@@ -132,9 +145,10 @@ func (s *Server) Shutdown() {
 	_ = s.httpSrv.Shutdown(ctx)
 }
 
-// NotifyReload broadcasts a "reload" SSE event to every connected browser tab.
-// It is called by the main event loop after a successful build.
-func (s *Server) NotifyReload() {
+// Notify broadcasts an SSE event (e.g. "reload" or "css-update") to every
+// connected browser tab. It is called by the main event loop after a
+// successful build.
+func (s *Server) Notify(event string) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -142,13 +156,13 @@ func (s *Server) NotifyReload() {
 	for ch := range s.sseClients {
 		// Non-blocking send to avoid stalling the build loop if a client is slow.
 		select {
-		case ch <- "reload":
+		case ch <- event:
 		default:
 		}
 	}
 
 	if count > 0 {
-		s.log.Info("Triggered live reload on %d connected client(s)", count)
+		s.log.Info("Triggered %s on %d connected client(s)", event, count)
 	}
 }
 

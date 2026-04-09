@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-04-09
+
+### Added
+- CSS Hot Module Replacement (HMR): Stylesheet changes now update instantly in the browser without a full page refresh.
+- Support for `.css`, `.scss`, `.sass`, and `.less` hot-reloading.
+- Enhanced SSE notification system supporting targeted update events.
+
+### Changed
+- Bumped version to v0.3.0.
+- Improved live reload snippet with CSS hot-swap logic.
+- Refactored server notification API for better extensibility.
+
 ## [0.2.1] - 2026-04-08
 
 ### Added

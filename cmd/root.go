@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 
@@ -201,7 +203,15 @@ func runRoot(cmd *cobra.Command, args []string) error {
 			if res.Success {
 				log.Success("Build finished in %s", res.Duration.Round(time.Millisecond))
 				if cfg.LiveReload {
-					srv.NotifyReload()
+					// Detect if the changed file is a style asset.
+					ext := strings.ToLower(filepath.Ext(event.Path))
+					isStyle := ext == ".css" || ext == ".scss" || ext == ".sass" || ext == ".less"
+
+					if isStyle {
+						srv.Notify("css-update")
+					} else {
+						srv.Notify("reload")
+					}
 				}
 			}
 			// On failure, the builder already logged the error.

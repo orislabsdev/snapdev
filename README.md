@@ -20,7 +20,7 @@ The standard `vite` dev server keeps your **entire module graph in memory** — 
 
 | Feature | Vite dev server | snapdev |
 |---|---|---|
-| Hot Module Replacement | ✅ Full HMR | ❌ Full-page reload |
+| Hot Module Replacement | ✅ Full HMR | ✅ CSS HMR / ❌ JS Reload |
 | Idle memory usage | ~200–500 MB | ~5–15 MB |
 | Incremental builds | ✅ In-memory | ✅ Via your build tool |
 | SPA fallback routing | ✅ | ✅ |
@@ -196,7 +196,9 @@ snapdev --build-only     # exits 0 on success, 1 on failure
 1. **Watcher** — `fsnotify` monitors the watch directory recursively. Events are debounced so that multiple rapid saves produce a single build trigger.
 2. **Builder** — runs your build command in a subprocess (`sh -c` on Unix, `cmd /C` on Windows). Stdout/stderr are captured and surfaced in the snapdev log on failure.
 3. **Server** — `net/http` serves files from the output directory. Unknown paths fall back to `index.html` for SPA client-side routing.
-4. **Live reload** — when enabled, a tiny `<script>` is injected into HTML responses that opens an SSE connection to `/__snapdev_sse`. After each successful build, snapdev sends a `reload` event and every connected tab refreshes.
+4. **HMR / Live reload** — when enabled, a tiny `<script>` is injected into HTML responses that opens an SSE connection to `/__snapdev_sse`. After each successful build:
+   - For **CSS/SCSS/LESS** changes, snapdev sends a `css-update` event, and the browser hot-swaps all stylesheets without a refresh.
+   - For **all other files**, snapdev sends a `reload` event and every connected tab performs a full refresh.
 
 ---
 

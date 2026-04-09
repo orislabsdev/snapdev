@@ -1,25 +1,27 @@
-# Release Notes - v0.2.1
+# Release Notes - v0.3.0
 
-We are pleased to announce version **v0.2.1** of **snapdev**! 🚀
+We are excited to announce version **v0.3.0** of **snapdev**! 🚀
 
-This release focuses on refining the **Reverse Proxy** feature introduced in v0.2.0, adding comprehensive **unit tests**, and improving the **SPA routing** logic to better handle browser navigation.
+This is a major feature release that introduces **CSS Hot Module Replacement (HMR)**, allowing you to see style changes instantly without losing your application state or refreshing the page.
 
 ## What's New?
 
-### 🛠️ Smart SPA Routing
-We've improved how `snapdev` decides whether to serve your `index.html` or forward a request to the reverse proxy. 
+### 🔥 CSS Hot Module Replacement (HMR)
+Say goodbye to full-page refreshes when you're just tweaking margins or colors! 
 
-Browsers performing full-page navigations (which include `Accept: text/html` in their headers) now correctly receive the `index.html` fallback for unknown routes. This ensures that client-side routing (like React Router) works seamlessly even when a proxy is configured for API calls.
+`snapdev` now distinguishes between style changes and logic changes. When you modify a **CSS, SCSS, Sass, or Less** file, `snapdev` sends a targeted update signal to the browser. The injected live-reload snippet then hot-swaps your stylesheets in real-time.
 
-### 🔌 Improved Proxy Compatibility
-The reverse proxy now correctly propagates the `Host` header to the target backend. This is a critical fix for users proxying to servers that rely on virtual hosting or specific host-based middleware.
+*   **Fast**: No waiting for the page to reload and re-render.
+*   **State-preserving**: Keep your form inputs, scroll position, and UI state intact while styling.
+*   **Agnostic**: Works with any bundler (Vite, Webpack, Parcel, etc.) as long as it outputs standard CSS.
 
-### 🧪 Enhanced Test Suite
-We've added a comprehensive unit test suite for the `server` package, covering static file resolution, SPA fallback, and proxying logic. This ensures a stable and predictable developer experience as the project grows.
+### 🏗️ Targeted SSE Notifications
+We've refactored our internal notification system to support more than just "reload". This paves the way for future HMR features for images, assets, and even JavaScript modules.
 
-### ✨ Visual Polish
-- Refined the startup banner for a cleaner look.
-- Improved code formatting and alignment in tests.
+### ✨ Other Improvements
+- Bumped version to **v0.3.0**.
+- Cleaned up the injected live-reload script for better reliability and performance.
+- Improved logging for development builds.
 
 ## Installation
 
@@ -37,10 +39,9 @@ go install github.com/orislabsdev/snapdev@latest
 ```
 
 ## What's Next?
-
 Our roadmap continues:
 - **Watch Filters**: More granular control over file inclusions and exclusions.
-- **Custom Events**: Support for user-defined SSE events.
+- **Asset HMR**: Hot-swapping images and other assets.
 - **Plugin System**: Research into custom build hooks.
 
 Thank you for your feedback and contributions!
